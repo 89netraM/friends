@@ -1,1 +1,8 @@
 @import "@89netram/snygg/src/index";
+@import "@89netram/snygg/src/vars";
+
+@media (min-width: $bigScreen) {
+	nav {
+		width: 20rem;
+	}
+}
