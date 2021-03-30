@@ -1,6 +1,8 @@
 import React, { Component, ReactNode } from "react";
 import { Person } from "./Person";
 import { uuid } from "./utils";
+import VisNetwork from "vis-network-react";
+import { Network } from "./Netwok";
 
 export interface Properties {
 }
@@ -202,6 +204,9 @@ export class App extends Component<Properties, State> {
 					</div>
 				</nav>
 				<main>
+					<Network
+						persons={this.state.persons}
+					/>
 				</main>
 			</>
 		);

@@ -2,14 +2,23 @@
 @import "@89netram/snygg/src/vars";
 @import "./person";
 
+$newNavSize: 20rem;
+
 @media (min-width: $bigScreen) {
 	nav {
-		width: 20rem;
+		width: $newNavSize;
+	}
+	main {
+		margin-left: $newNavSize;
 	}
 }
 
 nav {
 	overflow-y: auto;
+}
+
+main {
+	height: calc(100vh - #{$headerSize});
 }
 
 button.icon {

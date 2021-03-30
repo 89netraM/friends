@@ -18,6 +18,13 @@ module.exports = {
 					"sass-loader"
 				]
 			},
+			{
+				test: /\.svg$/,
+				loader: "file-loader",
+				options: {
+					name: "static/[name].[ext]",
+				},
+			},
 		]
 	},
 	resolve: {
