@@ -39,6 +39,7 @@ export class App extends Component<Properties, State> {
 		this.onNameChange = this.onNameChange.bind(this);
 		this.onRemoved = this.onRemoved.bind(this);
 		this.onFriendRemoved = this.onFriendRemoved.bind(this);
+		this.onNewFriendChange = this.onNewFriendChange.bind(this);
 		this.onFriendAdded = this.onFriendAdded.bind(this);
 	}
 
@@ -75,8 +76,19 @@ export class App extends Component<Properties, State> {
 		}));
 	}
 
-	private onFriendAdded(id: string, friendName: string): void {
+	private onNewFriendChange(id: string, newNewFriendName: string): void {
+		this.setState(s => ({
+			persons: s.persons.map(p => p.id !== id ? p : {
+				...p,
+				newFriendName: newNewFriendName,
+				newFriendValid: p.name !== newNewFriendName && p.friends.every(([_, f]) => f !== newNewFriendName),
+			}),
+		}));
+	}
+
+	private onFriendAdded(id: string): void {
 		this.setState(s => {
+			const friendName = s.persons.find(p => p.id === id).newFriendName;
 			let friendId = s.persons.find(p => p.name === friendName)?.id;
 			const persons = new Array<Readonly<Person.Properties>>(...s.persons);
 			if (friendId == null) {
@@ -93,6 +105,8 @@ export class App extends Component<Properties, State> {
 				persons: persons.map(p => p.id !== id ? p : {
 					...p,
 					friends: new Array<[string, string]>(...p.friends, [friendId, friendName]),
+					newFriendName: "",
+					newFriendValid: true,
 				}),
 			};
 		});
@@ -128,6 +142,7 @@ export class App extends Component<Properties, State> {
 								onNameChange={this.onNameChange}
 								onRemoved={this.onRemoved}
 								onFriendRemoved={this.onFriendRemoved}
+								onNewFriendChange={this.onNewFriendChange}
 								onFriendAdded={this.onFriendAdded}
 							/>
 						)

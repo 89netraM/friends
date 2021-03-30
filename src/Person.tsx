@@ -5,18 +5,19 @@ export namespace Person {
 		id: string;
 		name: string;
 		friends: ReadonlyArray<[string, string]>;
+		newFriendName?: string;
+		newFriendValid?: boolean;
 		isOpen: boolean;
 		onToggle?: (id: string) => void;
 		onNameChange?: (id: string, newName: string) => void;
 		onRemoved?: (id: string) => void;
 		onFriendRemoved?: (id: string, friendId: string) => void;
-		onFriendAdded?: (id: string, friendName: string) => void;
+		onNewFriendChange?: (id: string, newFriendName: string) => void;
+		onFriendAdded?: (id: string) => void;
 	}
 }
 
 export function Person(props: Readonly<Person.Properties>): JSX.Element {
-	let newFriendText: HTMLInputElement;
-
 	return (
 		<details
 			open={props.isOpen}
@@ -62,24 +63,18 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 				</ul>
 				<div>
 					<input
-						ref={e => newFriendText = e}
+						className={(props.newFriendValid ?? true) ? "" : "error"}
 						type="text"
 						placeholder="Add a friend"
-						defaultValue=""
+						value={props.newFriendName ?? ""}
 						list="person-list"
-						onKeyDown={e => {
-							if (e.key === "Enter") {
-								props.onFriendAdded?.(props.id, newFriendText.value);
-								newFriendText.value = "";
-							}
-						}}
+						onChange={e => props.onNewFriendChange?.(props.id, e.target.value)}
+						onKeyDown={e => props.newFriendValid && props.newFriendName?.length > 0 && e.key === "Enter" && props.onFriendAdded?.(props.id)}
 					/>
 					<button
 						className="primary icon"
-						onClick={() => {
-							props.onFriendAdded?.(props.id, newFriendText.value);
-							newFriendText.value = "";
-						}}
+						disabled={!((props.newFriendValid ?? true) && props.newFriendName?.length > 0)}
+						onClick={() => props.newFriendValid && props.newFriendName?.length > 0 && props.onFriendAdded?.(props.id)}
 					>➕</button>
 				</div>
 			</div>
