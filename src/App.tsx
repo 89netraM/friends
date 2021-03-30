@@ -7,6 +7,8 @@ export interface Properties {
 interface State {
 	navVisible: boolean;
 	persons: ReadonlyArray<Readonly<Person.Properties>>;
+	newPersonName: string;
+	newPersonValid: boolean;
 }
 
 export class App extends Component<Properties, State> {
@@ -32,7 +34,9 @@ export class App extends Component<Properties, State> {
 					friends: new Array<[string, string]>(["0", "Hanna"]),
 					isOpen: false,
 				},
-			]
+			],
+			newPersonName: "",
+			newPersonValid: true,
 		};
 
 		this.onPersonToggle = this.onPersonToggle.bind(this);
@@ -41,6 +45,8 @@ export class App extends Component<Properties, State> {
 		this.onFriendRemoved = this.onFriendRemoved.bind(this);
 		this.onNewFriendChange = this.onNewFriendChange.bind(this);
 		this.onFriendAdded = this.onFriendAdded.bind(this);
+		this.onNewPersonChange = this.onNewPersonChange.bind(this);
+		this.addNewPerson = this.addNewPerson.bind(this);
 	}
 
 	private onPersonToggle(id: string): void {
@@ -112,6 +118,36 @@ export class App extends Component<Properties, State> {
 		});
 	}
 
+	private onNewPersonChange(newNewPersonName: string): void {
+		this.setState(s => ({
+			newPersonName: newNewPersonName,
+			newPersonValid: s.persons.every(p => p.name !== newNewPersonName),
+		}));
+	}
+
+	private addNewPerson(): void {
+		this.setState(s => {
+			if (s.newPersonValid && s.newPersonName.length > 0) {
+				const persons = new Array<Readonly<Person.Properties>>(...s.persons);
+				persons.push({
+					id: uuid(),
+					name: s.newPersonName,
+					friends: new Array<[string, string]>(),
+					isOpen: false,
+				});
+				App.sortPersons(persons);
+				return {
+					persons,
+					newPersonName: "",
+					newPersonValid: true,
+				} as Properties;
+			}
+			else {
+				return s;
+			}
+		});
+	}
+
 	public render(): ReactNode {
 		return (
 			<>
@@ -147,6 +183,23 @@ export class App extends Component<Properties, State> {
 							/>
 						)
 					}
+					<div className="new-person">
+						<label className={this.state.newPersonValid ? "" : "error"}>
+							<span>Add a new person:</span>
+							<input
+								type="text"
+								placeholder="New persons name"
+								value={this.state.newPersonName}
+								onChange={e => this.onNewPersonChange(e.target.value)}
+								onKeyDown={e => e.key === "Enter" && this.addNewPerson()}
+							/>
+						</label>
+						<button
+							className="primary"
+							disabled={!(this.state.newPersonValid && this.state.newPersonName.length > 0)}
+							onClick={() => this.addNewPerson()}
+						>Add</button>
+					</div>
 				</nav>
 				<main>
 				</main>

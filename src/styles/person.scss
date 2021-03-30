@@ -17,7 +17,6 @@ nav {
 			border-top-color: transparent;
 		}
 		&:last-of-type {
-			margin-bottom: $distance / 2;
 			border-bottom-color: transparent;
 		}
 
@@ -118,6 +117,23 @@ nav {
 					flex-grow: 1;
 				}
 			}
+		}
+	}
+
+	.new-person {
+		padding: $distance / 2 $distance;
+		border-top: 1px solid var(--color);
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+
+		label > input {
+			max-width: unset;
+		}
+
+		button {
+			margin-top: $distance / 2;
+			align-self: flex-end;
 		}
 	}
 }
