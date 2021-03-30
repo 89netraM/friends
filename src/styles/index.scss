@@ -1,8 +1,13 @@
 @import "@89netram/snygg/src/index";
 @import "@89netram/snygg/src/vars";
+@import "./person";
 
 @media (min-width: $bigScreen) {
 	nav {
 		width: 20rem;
 	}
+}
+
+button.icon {
+	padding: $distance / 2;
 }

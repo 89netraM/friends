@@ -1,0 +1,123 @@
+@import "@89netram/snygg/src/vars";
+
+nav {
+	details {
+		padding-top: $distance / 2;
+		padding-left: $distance;
+		padding-bottom: $distance / 2;
+
+		border-width: 1px 0px;
+		border-style: solid;
+		border-color: transparent;
+
+		user-select: none;
+
+		&:first-of-type {
+			margin-top: $distance / 2;
+			border-top-color: transparent;
+		}
+		&:last-of-type {
+			margin-bottom: $distance / 2;
+			border-bottom-color: transparent;
+		}
+
+		&:not([open]) {
+			&:hover {
+				background-color: var(--highlight);
+			}
+		}
+		&[open] {
+			border-color: var(--color);
+
+			&:first-of-type {
+				border-top-color: transparent;
+			}
+			&:last-of-type {
+				border-bottom-color: transparent;
+			}
+
+			summary::before {
+				content: "🔽";
+			}
+		}
+
+		summary {
+			font-size: 1.25em;
+			outline: none;
+			cursor: pointer;
+			display: flex;
+
+			&::before {
+				padding: $distance / 4 0px;
+				border: 1px solid transparent;
+				content: "▶️";
+			}
+
+			div {
+				display: inline-flex;
+				justify-content: space-between;
+				flex-grow: 1;
+				padding-right: $distance;
+
+				span {
+					padding: $distance / 4 $distance / 2;
+					border: 1px solid transparent;
+				}
+
+				input {
+					display: inline-block;
+					font-size: inherit;
+					font-family: inherit;
+				}
+			}
+		}
+
+		> div {
+			margin-left: 2 * $distance;
+
+			h3 {
+				margin-top: $distance / 2;
+				margin-bottom: 0px;
+			}
+
+			ul {
+				margin: 0px;
+				margin-bottom: $distance / 2;
+				padding-left: 2rem;
+				list-style: unset;
+	
+				li {
+					height: unset;
+					cursor: unset;
+					position: relative;
+					padding: $distance / 4 0px;
+					margin-bottom: $distance / 4;
+
+					&:hover {
+						background-color: unset;
+					}
+
+					> * {
+						position: absolute;
+						top: 50%;
+						transform: translate(0px, -50%);
+					}
+
+					button {
+						position: absolute;
+						right: $distance;
+					}
+				}
+			}
+
+			div {
+				display: flex;
+				padding-right: $distance;
+
+				input {
+					flex-grow: 1;
+				}
+			}
+		}
+	}
+}
