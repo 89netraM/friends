@@ -4,6 +4,7 @@ import { Dialog } from "./Dialog";
 import { FreezeLoading } from "./FreezeLoading";
 import { Person } from "./Person";
 import { Storage } from "./Storage";
+import { i18n } from "./i18n";
 
 export async function LoadDialog(): Promise<[string, ReadonlyArray<Readonly<Person.Properties>>]> {
 	const container = document.createElement("div");
@@ -16,15 +17,15 @@ export async function LoadDialog(): Promise<[string, ReadonlyArray<Readonly<Pers
 		ReactDOM.render(
 			<Dialog
 				isOpen={true}
-				title="Load Network"
-				accept="Load"
+				title={i18n.GetPhrase("loadNetwork")}
+				accept={i18n.GetPhrase("load")}
 				onAccept={() => name?.length > 0 ? (ReactDOM.unmountComponentAtNode(container), resolve(name)) : null}
-				cancel="Cancel"
+				cancel={i18n.GetPhrase("cancel")}
 				onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve(null))}
 			>
 				<p>
 					<label>
-						<span>Network:</span>
+						<span>{i18n.GetPhrase("network")}:</span>
 						<select
 							defaultValue=""
 							onChange={e => name = e.target.value}
@@ -32,7 +33,7 @@ export async function LoadDialog(): Promise<[string, ReadonlyArray<Readonly<Pers
 							<option
 								hidden={true}
 								value=""
-							>Select a network</option>
+							>{i18n.GetPhrase("selectNetwork")}</option>
 							{
 								existingNames.map(n =>
 									<option
@@ -50,7 +51,7 @@ export async function LoadDialog(): Promise<[string, ReadonlyArray<Readonly<Pers
 	});
 
 	if (name != null) {
-		ReactDOM.render(<FreezeLoading text="Loading..."/>, container);
+		ReactDOM.render(<FreezeLoading text={i18n.GetPhrase("loading")}/>, container);
 		const [model, _] = await Promise.all([
 			Storage.LoadModel(name),
 			new Promise<void>(r => setTimeout(r, 350)), // Artificial loading time
@@ -66,11 +67,11 @@ export async function LoadDialog(): Promise<[string, ReadonlyArray<Readonly<Pers
 				ReactDOM.render(
 					<Dialog
 						isOpen={true}
-						title="Failed to load"
-						cancel="Ok"
+						title={i18n.GetPhrase("failedToLoad")}
+						cancel={i18n.GetPhrase("acceptFailure")}
 						onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve())}
 					>
-						<p>Something went wrong and we failed to load your network.</p>
+						<p>{i18n.GetPhrase("failedToLoad.description")}</p>
 					</Dialog>,
 					container
 				);

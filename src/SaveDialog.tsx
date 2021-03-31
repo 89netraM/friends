@@ -4,6 +4,7 @@ import { Dialog } from "./Dialog";
 import { FreezeLoading } from "./FreezeLoading";
 import { Person } from "./Person";
 import { Storage } from "./Storage";
+import { i18n } from "./i18n";
 
 export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Readonly<Person.Properties>>): Promise<string> {
 	const container = document.createElement("div");
@@ -16,10 +17,10 @@ export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Rea
 		ReactDOM.render(
 			<Dialog
 				isOpen={true}
-				title="Save Network"
-				accept="Save"
+				title={i18n.GetPhrase("saveNetwork")}
+				accept={i18n.GetPhrase("save")}
 				onAccept={() => name == null || name.length > 0 ? (ReactDOM.unmountComponentAtNode(container), resolve(name ?? suggestedName)) : null}
-				cancel="Cancel"
+				cancel={i18n.GetPhrase("cancel")}
 				onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve(null))}
 			>
 				<p>
@@ -34,7 +35,7 @@ export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Rea
 						}
 					</datalist>
 					<label>
-						<span>Name:</span>
+						<span>{i18n.GetPhrase("fileName")}:</span>
 						<input
 							type="text"
 							defaultValue={suggestedName}
@@ -55,15 +56,15 @@ export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Rea
 				ReactDOM.render(
 					<Dialog
 						isOpen={true}
-						title="Overwrite Network"
-						accept="Overwrite"
+						title={i18n.GetPhrase("overwriteNetwork")}
+						accept={i18n.GetPhrase("overwrite")}
 						onAccept={() => (ReactDOM.unmountComponentAtNode(container), resolve(true))}
-						cancel="Cancel"
+						cancel={i18n.GetPhrase("cancel")}
 						onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve(false))}
 					>
 						<p>
-							A model with that name already exists.<br/>
-							Do you wish to overwrite it?
+							{i18n.GetPhrase("networkAlreadyExists")}<br/>
+							{i18n.GetPhrase("wishToOverwrite")}
 						</p>
 					</Dialog>,
 					container
@@ -72,7 +73,7 @@ export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Rea
 		}
 
 		if (shouldWrite) {
-			ReactDOM.render(<FreezeLoading text="Saving..."/>, container);
+			ReactDOM.render(<FreezeLoading text={i18n.GetPhrase("saving")}/>, container);
 			const [success, _] = await Promise.all([
 				Storage.SaveModel(name, model),
 				new Promise(r => setTimeout(r, 350)), // Artificial loading time
@@ -88,11 +89,11 @@ export async function SaveDialog(suggestedName: string, model: ReadonlyArray<Rea
 					ReactDOM.render(
 						<Dialog
 							isOpen={true}
-							title="Failed to save"
-							cancel="Ok"
+							title={i18n.GetPhrase("failedToSave")}
+							cancel={i18n.GetPhrase("acceptFailure")}
 							onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve())}
 						>
-							<p>Something went wrong and we failed to save your network.</p>
+							<p>{i18n.GetPhrase("failedToSave.description")}</p>
 						</Dialog>,
 						container
 					);

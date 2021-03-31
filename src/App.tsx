@@ -4,6 +4,7 @@ import { uuid } from "./utils";
 import VisNetwork from "vis-network-react";
 import { Network } from "./Netwok";
 import { Dialog } from "./Dialog";
+import { i18n } from "./i18n";
 import { ImageDialog } from "./ImageDialog";
 import { SaveDialog } from "./SaveDialog";
 import { LoadDialog } from "./LoadDialog";
@@ -185,7 +186,7 @@ export class App extends Component<Properties, State> {
 						className="expand-nav"
 						onClick={() => this.setState(s => ({ navVisible: !s.navVisible }))}
 					></button>
-					<h1>Friends</h1>
+					<h1>{i18n.GetPhrase("friends")}</h1>
 				</header>
 				<nav className={this.state.navVisible ? "visible" : null}>
 					<datalist id="person-list">
@@ -215,10 +216,10 @@ export class App extends Component<Properties, State> {
 					}
 					<div className="new-person">
 						<label className={this.state.newPersonValid ? "" : "error"}>
-							<span>Add a new person:</span>
+							<span>{i18n.GetPhrase("addNewPerson")}:</span>
 							<input
 								type="text"
-								placeholder="New persons name"
+								placeholder={i18n.GetPhrase("newPersonName")}
 								value={this.state.newPersonName}
 								onChange={e => this.onNewPersonChange(e.target.value)}
 								onKeyDown={e => e.key === "Enter" && this.addNewPerson()}
@@ -228,15 +229,15 @@ export class App extends Component<Properties, State> {
 							className="primary"
 							disabled={!(this.state.newPersonValid && this.state.newPersonName.length > 0)}
 							onClick={() => this.addNewPerson()}
-						>Add</button>
+						>{i18n.GetPhrase("add")}</button>
 					</div>
 					<div className="save-load">
 						<button
 							onClick={this.onSave}
-						>Save</button>
+						>{i18n.GetPhrase("save")}</button>
 						<button
 							onClick={this.onLoad}
-						>Load</button>
+						>{i18n.GetPhrase("load")}</button>
 					</div>
 				</nav>
 				<main>

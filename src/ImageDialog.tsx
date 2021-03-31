@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom"
 import { Dialog } from "./Dialog";
+import { i18n } from "./i18n";
 
 export function ImageDialog(): Promise<Blob | null> {
 	return new Promise<Blob | null>(resolve => {
@@ -12,10 +13,10 @@ export function ImageDialog(): Promise<Blob | null> {
 		ReactDOM.render(
 			<Dialog
 				isOpen={true}
-				title="Upload Image"
-				accept="Done"
+				title={i18n.GetPhrase("uploadImage")}
+				accept={i18n.GetPhrase("done")}
 				onAccept={() => file != null ? (ReactDOM.unmountComponentAtNode(container), resolve(file)) : null}
-				cancel="Cancel"
+				cancel={i18n.GetPhrase("cancel")}
 				onCancel={() => (ReactDOM.unmountComponentAtNode(container), resolve(null))}
 			>
 				<p>
@@ -23,7 +24,7 @@ export function ImageDialog(): Promise<Blob | null> {
 						<button
 							className="primary"
 							onClick={() => input.click()}
-						>Select Image</button>
+						>{i18n.GetPhrase("selectImage")}</button>
 						<input
 							ref={i => input = i}
 							type="file"
@@ -32,8 +33,8 @@ export function ImageDialog(): Promise<Blob | null> {
 							onChange={e => e.target.files.length > 0 ? file = e.target.files.item(0) : null}
 						/>
 						<span
-							data-no-file="No file selected"
-							data-selected-file="File selected"
+							data-no-file={i18n.GetPhrase("noFileSelected")}
+							data-selected-file={i18n.GetPhrase("fileSelected")}
 						></span>
 					</label>
 				</p>

@@ -1,4 +1,5 @@
 import React from "react";
+import { i18n } from "./i18n";
 import brokenImage from "./static/brokenImage.svg"
 
 export namespace Person {
@@ -45,7 +46,7 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 					{	!props.isOpen ?
 						<>
 							<span>{props.name}</span>
-							<span>{props.friends.length} friend(s)</span>
+							<span>{props.friends.length} {props.friends.length === 1 ? i18n.GetPhrase("friend") : i18n.GetPhrase("friends")}</span>
 						</> :
 						<>
 							<input
@@ -62,7 +63,7 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 				</div>
 			</summary>
 			<div>
-				<h3>Friends:</h3>
+				<h3>{i18n.GetPhrase("friends")}:</h3>
 				<ul>
 					{
 						props.friends.map(([id, friend]) =>
@@ -80,7 +81,7 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 					<input
 						className={(props.newFriendValid ?? true) ? "" : "error"}
 						type="text"
-						placeholder="Add a friend"
+						placeholder={i18n.GetPhrase("addFriend")}
 						value={props.newFriendName ?? ""}
 						list="person-list"
 						onChange={e => props.onNewFriendChange?.(props.id, e.target.value)}
