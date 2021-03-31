@@ -3,6 +3,8 @@ import { Person } from "./Person";
 import { uuid } from "./utils";
 import VisNetwork from "vis-network-react";
 import { Network } from "./Netwok";
+import { Dialog } from "./Dialog";
+import { ImageDialog } from "./ImageDialog";
 
 export interface Properties {
 }
@@ -27,12 +29,14 @@ export class App extends Component<Properties, State> {
 				{
 					id: "0",
 					name: "Hanna",
+					image: null,
 					friends: new Array<[string, string]>(["1", "Mårten"]),
 					isOpen: false,
 				},
 				{
 					id: "1",
 					name: "Mårten",
+					image: null,
 					friends: new Array<[string, string]>(["0", "Hanna"]),
 					isOpen: false,
 				},
@@ -43,6 +47,7 @@ export class App extends Component<Properties, State> {
 
 		this.onPersonToggle = this.onPersonToggle.bind(this);
 		this.onNameChange = this.onNameChange.bind(this);
+		this.onEditImage = this.onEditImage.bind(this);
 		this.onRemoved = this.onRemoved.bind(this);
 		this.onFriendRemoved = this.onFriendRemoved.bind(this);
 		this.onNewFriendChange = this.onNewFriendChange.bind(this);
@@ -65,6 +70,16 @@ export class App extends Component<Properties, State> {
 				friends: p.friends.map(([i, f]) => [i, i === id ? newName : f]),
 			})),
 		}));
+	}
+
+	private async onEditImage(id: string): Promise<void> {
+		const image = await ImageDialog();
+		if (image != null) {
+			const url = URL.createObjectURL(image);
+			this.setState(s => ({
+				persons: s.persons.map(p => p.id !== id ? p : { ...p, image: url, }),
+			}));
+		}
 	}
 
 	private onRemoved(id: string): void {
@@ -104,6 +119,7 @@ export class App extends Component<Properties, State> {
 				persons.push({
 					id: friendId,
 					name: friendName,
+					image: null,
 					friends: new Array<[string, string]>(),
 					isOpen: false,
 				});
@@ -134,6 +150,7 @@ export class App extends Component<Properties, State> {
 				persons.push({
 					id: uuid(),
 					name: s.newPersonName,
+					image: null,
 					friends: new Array<[string, string]>(),
 					isOpen: false,
 				});
@@ -178,6 +195,7 @@ export class App extends Component<Properties, State> {
 								{...person}
 								onToggle={this.onPersonToggle}
 								onNameChange={this.onNameChange}
+								onEditImage={this.onEditImage}
 								onRemoved={this.onRemoved}
 								onFriendRemoved={this.onFriendRemoved}
 								onNewFriendChange={this.onNewFriendChange}

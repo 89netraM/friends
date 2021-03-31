@@ -1,6 +1,7 @@
 @import "@89netram/snygg/src/index";
 @import "@89netram/snygg/src/vars";
 @import "./person";
+@import "./file";
 
 $newNavSize: 20rem;
 
@@ -19,6 +20,10 @@ nav {
 
 main {
 	height: calc(100vh - #{$headerSize});
+
+	.dialog & {
+		height: unset;
+	}
 }
 
 button.icon {

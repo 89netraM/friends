@@ -1,15 +1,18 @@
 import React from "react";
+import brokenImage from "./static/brokenImage.svg"
 
 export namespace Person {
 	export interface Properties {
 		id: string;
 		name: string;
+		image: string;
 		friends: ReadonlyArray<[string, string]>;
 		newFriendName?: string;
 		newFriendValid?: boolean;
 		isOpen: boolean;
 		onToggle?: (id: string) => void;
 		onNameChange?: (id: string, newName: string) => void;
+		onEditImage?: (id: string) => void;
 		onRemoved?: (id: string) => void;
 		onFriendRemoved?: (id: string, friendId: string) => void;
 		onNewFriendChange?: (id: string, newFriendName: string) => void;
@@ -28,24 +31,36 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 				}
 			}}
 		>
-			<summary>{
-				!props.isOpen ?
-					<div>
-						<span>{props.name}</span>
-						<span>{props.friends.length} friend(s)</span>
-					</div> :
-					<div>
-						<input
-							type="text"
-							value={props.name}
-							onChange={e => props.onNameChange?.(props.id, e.currentTarget.value)}
+			<summary>
+				<div>
+					<div
+						className="image-wrapper"
+						onClick={() => props.isOpen && props.onEditImage?.(props.id)}
+					>
+						<div
+							className="image"
+							style={{ backgroundImage: `url(${props.image ?? brokenImage})` }}
 						/>
-						<button
-							className="danger icon"
-							onClick={() => props.onRemoved?.(props.id)}
-						>🗑️</button>
 					</div>
-			}</summary>
+					{	!props.isOpen ?
+						<>
+							<span>{props.name}</span>
+							<span>{props.friends.length} friend(s)</span>
+						</> :
+						<>
+							<input
+								type="text"
+								value={props.name}
+								onChange={e => props.onNameChange?.(props.id, e.currentTarget.value)}
+							/>
+							<button
+								className="danger icon"
+								onClick={() => props.onRemoved?.(props.id)}
+							>🗑️</button>
+						</>
+					}
+				</div>
+			</summary>
 			<div>
 				<h3>Friends:</h3>
 				<ul>
