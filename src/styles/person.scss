@@ -171,7 +171,7 @@ nav {
 
 	.new-person {
 		padding: $distance / 2 $distance;
-		border-top: 1px solid var(--color);
+		border-top: 1px solid transparent;
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
@@ -184,5 +184,8 @@ nav {
 			margin-top: $distance / 2;
 			align-self: flex-end;
 		}
+	}
+	details + .new-person {
+		border-top-color: var(--color);
 	}
 }
