@@ -24,7 +24,7 @@ export class Network extends Component<Network.Properties, State> {
 			nodes: new Map<string, Node>(props.persons.map(p => ({
 				id: p.id,
 				label: p.name,
-				image: p.image ?? brokenImage,
+				image: p.image?.[1] ?? brokenImage,
 			})).map(n => [n.id, n])),
 		};
 	}

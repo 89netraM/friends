@@ -5,7 +5,7 @@ export namespace Person {
 	export interface Properties {
 		id: string;
 		name: string;
-		image: string;
+		image: [string, string] | null;
 		friends: ReadonlyArray<[string, string]>;
 		newFriendName?: string;
 		newFriendValid?: boolean;
@@ -39,7 +39,7 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 					>
 						<div
 							className="image"
-							style={{ backgroundImage: `url(${props.image ?? brokenImage})` }}
+							style={{ backgroundImage: `url(${props.image?.[1] ?? brokenImage})` }}
 						/>
 					</div>
 					{	!props.isOpen ?

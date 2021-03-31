@@ -5,6 +5,8 @@ import VisNetwork from "vis-network-react";
 import { Network } from "./Netwok";
 import { Dialog } from "./Dialog";
 import { ImageDialog } from "./ImageDialog";
+import { SaveDialog } from "./SaveDialog";
+import { LoadDialog } from "./LoadDialog";
 
 export interface Properties {
 }
@@ -13,6 +15,7 @@ interface State {
 	persons: ReadonlyArray<Readonly<Person.Properties>>;
 	newPersonName: string;
 	newPersonValid: boolean;
+	savedName: string;
 }
 
 export class App extends Component<Properties, State> {
@@ -25,24 +28,10 @@ export class App extends Component<Properties, State> {
 
 		this.state = {
 			navVisible: false,
-			persons: [
-				{
-					id: "0",
-					name: "Hanna",
-					image: null,
-					friends: new Array<[string, string]>(["1", "Mårten"]),
-					isOpen: false,
-				},
-				{
-					id: "1",
-					name: "Mårten",
-					image: null,
-					friends: new Array<[string, string]>(["0", "Hanna"]),
-					isOpen: false,
-				},
-			],
+			persons: new Array<Readonly<Person.Properties>>(),
 			newPersonName: "",
 			newPersonValid: true,
+			savedName: null,
 		};
 
 		this.onPersonToggle = this.onPersonToggle.bind(this);
@@ -54,6 +43,9 @@ export class App extends Component<Properties, State> {
 		this.onFriendAdded = this.onFriendAdded.bind(this);
 		this.onNewPersonChange = this.onNewPersonChange.bind(this);
 		this.addNewPerson = this.addNewPerson.bind(this);
+
+		this.onSave = this.onSave.bind(this);
+		this.onLoad = this.onLoad.bind(this);
 	}
 
 	private onPersonToggle(id: string): void {
@@ -77,7 +69,7 @@ export class App extends Component<Properties, State> {
 		if (image != null) {
 			const url = URL.createObjectURL(image);
 			this.setState(s => ({
-				persons: s.persons.map(p => p.id !== id ? p : { ...p, image: url, }),
+				persons: s.persons.map(p => p.id !== id ? p : { ...p, image: [uuid(), url], }),
 			}));
 		}
 	}
@@ -167,6 +159,24 @@ export class App extends Component<Properties, State> {
 		});
 	}
 
+	private async onSave(): Promise<void> {
+		const savedName = await SaveDialog(this.state.savedName, this.state.persons);
+		this.setState({
+			savedName: savedName,
+		});
+	}
+
+	private async onLoad(): Promise<void> {
+		const response = await LoadDialog();
+		if (response != null) {
+			const [savedName, persons] = response;
+			this.setState({
+				persons: persons,
+				savedName: savedName,
+			});
+		}
+	}
+
 	public render(): ReactNode {
 		return (
 			<>
@@ -219,6 +229,14 @@ export class App extends Component<Properties, State> {
 							disabled={!(this.state.newPersonValid && this.state.newPersonName.length > 0)}
 							onClick={() => this.addNewPerson()}
 						>Add</button>
+					</div>
+					<div className="save-load">
+						<button
+							onClick={this.onSave}
+						>Save</button>
+						<button
+							onClick={this.onLoad}
+						>Load</button>
 					</div>
 				</nav>
 				<main>

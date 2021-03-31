@@ -2,21 +2,8 @@
 @import "@89netram/snygg/src/vars";
 @import "./person";
 @import "./file";
-
-$newNavSize: 20rem;
-
-@media (min-width: $bigScreen) {
-	nav {
-		width: $newNavSize;
-	}
-	main {
-		margin-left: $newNavSize;
-	}
-}
-
-nav {
-	overflow-y: auto;
-}
+@import "./nav";
+@import "./freeze-loading";
 
 main {
 	height: calc(100vh - #{$headerSize});

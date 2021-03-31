@@ -1,0 +1,14 @@
+.cover {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	backdrop-filter: blur(1px) saturate(0.75);
+
+	position: fixed;
+	top: -50vh;
+	left: -50vw;
+	right: -50vw;
+	bottom: -50vh;
+	z-index: 5;
+}

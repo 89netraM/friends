@@ -1,0 +1,36 @@
+@import "@89netram/snygg/src/vars";
+
+$newNavSize: 20rem;
+
+@media (min-width: $bigScreen) {
+	nav {
+		width: $newNavSize;
+	}
+	main {
+		margin-left: $newNavSize;
+	}
+}
+
+$saveLoadHeight: $distance * 4;
+nav {
+	overflow-y: auto;
+
+	.save-load {
+		height: $saveLoadHeight;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: $distance;
+
+		background-color: var(--level1-color);
+		box-shadow: 0px 0px $distance var(--shadow);
+
+		position: sticky;
+		top: calc(100vh - #{$saveLoadHeight + $headerSize});
+
+		button {
+			font-size: 1.25rem;
+			font-weight: normal;
+		}
+	}
+}
