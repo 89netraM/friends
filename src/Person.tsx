@@ -22,8 +22,8 @@ export function Person(props: Readonly<Person.Properties>): JSX.Element {
 		<details
 			open={props.isOpen}
 			onClick={e => {
-				if (!props.isOpen|| (e.target as Node).nodeName === "SUMMARY") {
-					e.preventDefault();
+				e.preventDefault();
+				if (!props.isOpen || (e.target as Node).nodeName === "SUMMARY") {
 					props.onToggle?.(props.id);
 				}
 			}}
